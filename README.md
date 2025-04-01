@@ -1,34 +1,72 @@
-<p align="center">
-    <img title="Laravel Zero" height="100" src="https://raw.githubusercontent.com/laravel-zero/docs/master/images/logo/laravel-zero-readme.png" alt="Laravel Zero Logo" />
-</p>
+# OO Program
 
-<p align="center">
-  <a href="https://github.com/laravel-zero/framework/actions"><img src="https://github.com/laravel-zero/laravel-zero/actions/workflows/tests.yml/badge.svg" alt="Build Status" /></a>
-  <a href="https://packagist.org/packages/laravel-zero/framework"><img src="https://img.shields.io/packagist/dt/laravel-zero/framework.svg" alt="Total Downloads" /></a>
-  <a href="https://packagist.org/packages/laravel-zero/framework"><img src="https://img.shields.io/packagist/v/laravel-zero/framework.svg?label=stable" alt="Latest Stable Version" /></a>
-  <a href="https://packagist.org/packages/laravel-zero/framework"><img src="https://img.shields.io/packagist/l/laravel-zero/framework.svg" alt="License" /></a>
-</p>
+## About the project
 
-Laravel Zero was created by [Nuno Maduro](https://github.com/nunomaduro) and [Owen Voke](https://github.com/owenvoke), and is a micro-framework that provides an elegant starting point for your console application. It is an **unofficial** and customized version of Laravel optimized for building command-line applications.
+This project is console application. Mechanism which reads a file from command line. The file contains a list of
+products. The program will read the file and
+import the products into a database.
 
-- Built on top of the [Laravel](https://laravel.com) components.
-- Optional installation of Laravel [Eloquent](https://laravel-zero.com/docs/database/), Laravel [Logging](https://laravel-zero.com/docs/logging/) and many others.
-- Supports interactive [menus](https://laravel-zero.com/docs/build-interactive-menus/) and [desktop notifications](https://laravel-zero.com/docs/send-desktop-notifications/) on Linux, Windows & MacOS.
-- Ships with a [Scheduler](https://laravel-zero.com/docs/task-scheduling/) and  a [Standalone Compiler](https://laravel-zero.com/docs/build-a-standalone-application/).
-- Integration with [Collision](https://github.com/nunomaduro/collision) - Beautiful error reporting
+### Libraries used
 
-------
+- [Laravel zero](https://laravel-zero.com/)
+- [Laravel Excel](https://laravel-excel.com/)
 
-## Documentation
+## Run the project locally using development server
 
-For full documentation, visit [laravel-zero.com](https://laravel-zero.com/).
+1. Clone the repository
+2. Run `composer install`
+3. Setup database in `.env` file
+4. Run `php artisan migrate`
+5. Run `php artisan import:products <path_to_file>` where `<path_to_file>` is the path to the file you want to import
 
-## Support the development
-**Do you like this project? Support it by donating**
+## Run the project using docker
 
-- PayPal: [Donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=66BYDWAT92N6L)
-- Patreon: [Donate](https://www.patreon.com/nunomaduro)
+1. Clone the repository
+2. Run `docker-compose up -d`
+3. Run `docker-compose exec <app> php artisan import:products <path_to_file>` where `<app>` is the name of the app
+   container and `<path_to_file>` is the path to the file you want to import
+
+## Development
+
+### Linting
+
+```bash
+composer lint
+```
+
+### Testing
+
+```bash
+composer test
+```
+
+## How to import products
+
+#### Supported format
+
+Run the following command:
+
+```bash
+php artisan import:products <path_to_file>
+```
+
+_change `<path_to_file>` to the path of the file you want to import_
+
+### Rule of importing products
+
+- The file must be a CSV file
+- The file must have the following columns:
+    - Product Code
+    - Product Name
+    - Product Description
+    - Stock
+    - Cost in GBP
+    - Discontinued
+- Rows with cost in GBP less than 5 will be ignored and stock less than 10 will be ignored
+- Any item with cost more than 1000 will be ignored
+- Items marked as discontinued will be imported, but will have the discontinued date set as the current date.
+- Failed imports will be logged.
 
 ## License
 
-Laravel Zero is an open-source software licensed under the MIT license.
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details

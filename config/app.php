@@ -1,5 +1,7 @@
 <?php
 
+use Maatwebsite\Excel\ExcelServiceProvider;
+
 return [
 
     /*
@@ -13,7 +15,7 @@ return [
     |
     */
 
-    'name' => 'Application',
+    'name' => 'Artisan',
 
     /*
     |--------------------------------------------------------------------------
@@ -55,6 +57,12 @@ return [
 
     'providers' => [
         App\Providers\AppServiceProvider::class,
+        ExcelServiceProvider::class,
+        Illuminate\Validation\ValidationServiceProvider::class,
+        Illuminate\Translation\TranslationServiceProvider::class,
     ],
 
+    'aliases' => [
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+    ],
 ];
